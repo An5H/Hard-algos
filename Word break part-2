@@ -1,0 +1,56 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+	public static void main (String[] args) throws IOException
+	{
+	    BufferedReader ob = new BufferedReader(new InputStreamReader(System.in));
+	    int t = Integer.parseInt(ob.readLine().trim());
+	    while(t-- > 0){
+	        int n = Integer.parseInt(ob.readLine().trim());
+	        String lines[] = ob.readLine().trim().split("\\s+");
+	        List <String> realines = new ArrayList <>();
+	        for(String i: lines){
+	            realines.add(i);
+	        }
+	        String s = ob.readLine().trim();
+	        realines = new Solution().wordBreak(s, realines);
+	        if(realines.size() == 0)
+	            System.out.print("()");
+	        else
+	            for(String i: realines){
+	                System.out.print("("+i+")");
+	        }
+	        System.out.println();
+	    }
+	}
+}
+class Solution {
+    public List<String> wordBreak(String s, List <String> wordDict){
+        return DFS(s, wordDict, new HashMap<String, List<String>>());
+    }
+
+    List <String> DFS(String s, List<String> wordDict, HashMap<String, List<String>> map){
+        if (map.containsKey(s)){
+            return map.get(s);
+        }
+
+        ArrayList <String> result = new ArrayList<>();
+        if (s.length() == 0){
+             result.add("");
+            return result;
+        }
+
+        for (String word : wordDict){
+            if (s.startsWith(word)){
+            List <String> subList = DFS(s.substring(word.length()), wordDict, map);
+                for (String sub : subList){
+                    result.add(word + (sub.length() == 0 ? "" : " " + sub));
+                }
+            }
+        }    
+    map.put(s, result);
+    return result;
+    }
+}
